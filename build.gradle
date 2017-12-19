@@ -1,0 +1,58 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'io.spring.gradle:dependency-management-plugin:1.0.4.RELEASE'
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.5.9.RELEASE'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'org.springframework.boot'
+
+compileJava.doFirst {
+    file("${rootDir}/generated/generated").mkdirs()
+}
+
+compileJava {
+    options.compilerArgs << "-s" << "${rootDir}/generated/generated"
+}
+
+clean.doFirst {
+    delete "${rootDir}/generated"
+}
+
+repositories {
+    jcenter()
+}
+
+dependencyManagement {
+    imports {
+        mavenBom 'io.spring.platform:platform-bom:Brussels-SR6'
+    }
+}
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok',
+            'com.querydsl:querydsl-apt::jpa'
+
+    compile 'org.springframework.boot:spring-boot-starter',
+            'org.springframework.boot:spring-boot-starter-validation',
+            'org.springframework.boot:spring-boot-starter-data-jpa',
+            'com.querydsl:querydsl-apt',
+            'com.querydsl:querydsl-jpa'
+
+    runtime 'org.liquibase:liquibase-core',
+            'com.h2database:h2'
+}
+
+idea {
+    module {
+        sourceDirs += file('generated/generated')
+        generatedSourceDirs += file('generated/generated')
+    }
+}

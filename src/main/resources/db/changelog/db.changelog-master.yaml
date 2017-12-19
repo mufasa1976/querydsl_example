@@ -1,0 +1,19 @@
+databaseChangeLog:
+- changeSet:
+    id: create Table SOME_TABLES
+    author: mufasa1976
+    changes:
+    - createTable:
+        tableName: SOME_TABLES
+        columns:
+        - column:
+            name: ID
+            type: bigint
+            autoIncrement: true
+            constraints:
+              primaryKey: true
+        - column:
+            name: SOME_TEXT
+            type: varchar(1000)
+            constraints:
+              nullable: false
