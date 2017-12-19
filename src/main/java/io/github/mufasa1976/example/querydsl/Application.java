@@ -1,5 +1,7 @@
 package io.github.mufasa1976.example.querydsl;
 
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
@@ -39,5 +41,9 @@ public class Application implements ApplicationRunner {
                  .build()
     ).collect(Collectors.toList());
     someTableRepository.save(someTables);
+
+    Predicate predicate = QSomeTable.someTable.someText.containsIgnoreCase("other");
+    someTableRepository.findAll(predicate)
+                       .forEach(someTable -> log.info("Found some Table: {}", someTable));
   }
 }
