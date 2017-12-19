@@ -19,6 +19,7 @@ compileJava.doFirst {
 }
 
 compileJava {
+    options.compilerArgs << "-parameters"
     options.compilerArgs << "-s" << "${rootDir}/generated/generated"
 }
 
